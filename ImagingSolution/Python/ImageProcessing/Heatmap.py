@@ -26,8 +26,6 @@ def MakeHeatmap(HeatMapData):
 
 
 if __name__ == '__main__':
-
-    data = np.loadtxt('data/sample2.csv', delimiter=',')
-    array_info(data)
-    MakeHeatmap(data)
+    Excel_data = "Sample.csv"      # 処理するエクセルデータを入力してください
+    MakeHeatmap(Excel_data)
     
