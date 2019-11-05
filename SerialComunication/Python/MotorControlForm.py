@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
+#from matplotlib.backends.backend_tkagg import NavigationToolbar2TkAgg
+from matplotlib.backends.backend_tkagg import NavigationToolbar2Tk
 from matplotlib.figure import Figure
 from tkinter import font
 
@@ -20,18 +21,25 @@ def MakeForm(title_name):
     root = tk.Tk()
     root.wm_title(title_name)  # ウインドウネーム作成
     root.geometry("1280x960")  # フォームサイズ指定
-    root.configure(bg='midnightblue')
+    root.configure(bg="#333333")
     return root
 
 
 def MakeCanvas(root):
+    BGColor = "#9DA5A0"
     # グラフ用fig生成
     fig1 = Figure(figsize=(6, 4))
+    fig1.patch.set_facecolor(BGColor)
     fig2 = Figure(figsize=(6, 4))
+    fig2.patch.set_facecolor(BGColor)
     fig3 = Figure(figsize=(6, 4))
+    fig3.patch.set_facecolor(BGColor)
     fig4 = Figure(figsize=(6, 4))
+    fig4.patch.set_facecolor(BGColor)
     fig5 = Figure(figsize=(6, 4))
+    fig5.patch.set_facecolor(BGColor)
     fig6 = Figure(figsize=(6, 4))
+    fig6.patch.set_facecolor(BGColor)
     fig = [fig1, fig2, fig3, fig4, fig5, fig6]
 
     canvas1 = FigureCanvasTkAgg(fig1, master=root)    # フォームキャンバス作成
@@ -116,6 +124,11 @@ def _MotorControl():
 
     return 0
 
+# 目標値のセット
+def _qd_set():
+    set_qd = float(qd_txt.get())
+    print(set_qd)
+
 
 # プログラム終了ボタン処理
 def _quit():
@@ -138,42 +151,43 @@ if __name__ == '__main__':
 
     plot_data = fig[0].add_subplot(111)
     plot_data.set_ylim([-1.1, 1.1])
-    line1, = plot_data.plot(x, np.sin(x))
+    line1, = plot_data.plot(x, np.sin(x), color='#00FF00')
     ani1 = animation.FuncAnimation(fig[0], animate1, ll,
-                                   init_func=init1, interval=50, blit=True,)
+                                   init_func=init1, interval=10, blit=True,)
 
     plot_data2 = fig[1].add_subplot(111)
     plot_data2.set_ylim([-1.1, 1.1])
-    line2, = plot_data2.plot(x, np.sin(x))
+    line2, = plot_data2.plot(x, np.sin(x), color='#00FF00')
     ani2 = animation.FuncAnimation(fig[1], animate2, ll,
-                                   init_func=init2, interval=50, blit=True,)
+                                   init_func=init2, interval=20, blit=True,)
 
     plot_data3 = fig[2].add_subplot(111)
     plot_data3.set_ylim([-1.1, 1.1])
-    line3, = plot_data3.plot(x, np.sin(x))
+    line3, = plot_data3.plot(x, np.sin(x), color='#00FF00')
     ani3 = animation.FuncAnimation(fig[2], animate3, ll,
-                                   init_func=init3, interval=50, blit=True,)
+                                   init_func=init3, interval=30, blit=True,)
 
     plot_data4 = fig[3].add_subplot(111)
     plot_data4.set_ylim([-1.1, 1.1])
-    line4, = plot_data4.plot(x, np.sin(x))
+    line4, = plot_data4.plot(x, np.sin(x), color='#00FF00')
     ani4 = animation.FuncAnimation(fig[3], animate4, ll,
-                                   init_func=init4, interval=50, blit=True,)
+                                   init_func=init4, interval=40, blit=True,)
 
     plot_data5 = fig[4].add_subplot(111)
     plot_data5.set_ylim([-1.1, 1.1])
-    line5, = plot_data5.plot(x, np.sin(x))
+    line5, = plot_data5.plot(x, np.sin(x), color='#00FF00')
     ani5 = animation.FuncAnimation(fig[4], animate5, ll,
                                    init_func=init5, interval=50, blit=True,)
 
     plot_data6 = fig[5].add_subplot(111)
     plot_data6.set_ylim([-1.1, 1.1])
-    line6, = plot_data6.plot(x, np.sin(x))
+    line6, = plot_data6.plot(x, np.sin(x), color='#00FF00')
     ani6 = animation.FuncAnimation(fig[5], animate6, ll,
-                                   init_func=init6, interval=50, blit=True,)
+                                   init_func=init6, interval=100, blit=True,)
 
-    toolbar = NavigationToolbar2TkAgg(canvas[0], root)
-
+    # toolbar = NavigationToolbar2TkAgg(canvas[0], root)
+    toolbar = NavigationToolbar2Tk(canvas[0], root)
+    
     canvas[0].get_tk_widget().place(x=400, y=90)
     canvas[1].get_tk_widget().place(x=400, y=360)
     canvas[2].get_tk_widget().place(x=400, y=630)
@@ -182,27 +196,44 @@ if __name__ == '__main__':
     canvas[5].get_tk_widget().place(x=800, y=630)
 
     Static1 = tk.Label(text=u"Please Select Control Mode.",
-                       foreground="#00ff00", background="midnightblue",
+                       foreground="#60CAAD", background="#333333",
                        font=font1)
     Static1.place(x=40, y=30)
+    
+    Static2 = tk.Label(text=u"Please Input Desired Angle.",
+                       foreground="#60CAAD", background="#333333",
+                       font=font1)
+    Static2.place(x=40, y=170)
+    
+    qd_txt = tk.Entry(width=20)
+    qd_txt.place(x=175, y=200)
+    
+    # qd_setボタン
+    qd_set_button = tk.Button(master=root, text="Set",
+                              width=6, height=1, command=_qd_set)
+    qd_set_button.place(x=310, y=240)
 
     # Encoder Chacker
-    encoder_check_button = tk.Button(master=root, text="Encoder Check Mode",
-                                     width=20, height=3, command=_CheckEncoder)
+    encoder_check_button = tk.Button(master=root, bg='#9DA5A0', fg='#333333',
+                                     text="Encoder Check Mode",
+                                     width=15, height=3, command=_CheckEncoder)
     encoder_check_button.place(x=70, y=90)
 
     # motor_control
-    motor_control_button = tk.Button(master=root, text="Motor Control Mode",
-                                     width=20, height=3, command=_CheckEncoder)
+    motor_control_button = tk.Button(master=root, bg='#9DA5A0', fg='#333333',
+                                     text="Motor Control Mode",
+                                     width=15, height=3, command=_CheckEncoder)
     motor_control_button.place(x=230, y=90)
 
     # 制御開始ボタン
-    start_button = tk.Button(master=root, text="Plogram Start!",  width=20,
+    start_button = tk.Button(master=root, bg='#9DA5A0', fg='#333333',
+                             text="Plogram Start!",  width=15,
                              height=3, command=_start)
     start_button.place(x=80, y=430)
 
     # 終了ボタン配置
-    quit_button = tk.Button(master=root, text="Quit", width=20, height=3,
+    quit_button = tk.Button(master=root, bg='#9DA5A0', fg='#333333',
+                            text="Quit", width=15, height=3,
                             command=_quit)
     quit_button.place(x=240, y=430)
 
