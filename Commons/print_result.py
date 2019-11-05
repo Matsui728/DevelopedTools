@@ -17,22 +17,20 @@ import os
 
 cp = configparser.ConfigParser()
 cp.read('config')
-root_dir = cp.get('dataset_dir', 'dir_path')
+# root_dir = cp.get('dataset_dir', 'dir_path')
 
-[col1, col2, col3, col4,
- col5, col6, col7, col8]=['red', 'yellow', 'lime', 'aqua',
-                          'blue', 'purple', 'crimson', 'dimgrey']
-
-colorlist = [col1, col2, col3, col4, col5, col6, col7, col8]
 
 
 def print_graph(title_name, x_data, y_data,
                 label_name, xlabel_name, ylabel_name, num_plot_data=1,
                 legend_mode=False):
+    colorlist = ['#ff0000', '#0000ff', '#7fff00', '#00ffff',
+                 '#ffff00', '#ff00ff']
     plt.title(title_name, fontsize=15, fontname='Times New Roman')
 
     for i in range(num_plot_data):
-        plt.plot(x_data, y_data[i], linestyle='solid')
+        plt.plot(x_data, y_data[i], color=colorlist[i], tick_label=colorlist,
+                 linestyle='solid', linewidth = 1.0)
 
     plt.xlabel(xlabel_name, fontsize=15, fontname='Times New Roman')  # x軸のタイトル
     plt.ylabel(ylabel_name, fontsize=15, fontname='Times New Roman')  # y軸のタイトル
@@ -120,7 +118,7 @@ def make_data_log_list(data_list, input_data_list):
 
     return output_data_list
 
-
+"""
 def move_excel_data(data_root=root_dir):
     file_name = ['4dof_simulation_link_data.csv',
                  '4dof_simulation_motor_data.csv',
@@ -145,6 +143,6 @@ def move_excel_data(data_root=root_dir):
     for i in range(len(file_name)):
         shutil.move('./' + file_name[i], data_folder_dir)
 
-
+"""
 if __name__ == '__main__':
     print_graph()
